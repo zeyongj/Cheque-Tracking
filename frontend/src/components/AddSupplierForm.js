@@ -10,6 +10,7 @@ function AddSupplierForm({ onNewSupplier, userName }) {
     status: '',
     notes: ''
   });
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,21 +18,32 @@ function AddSupplierForm({ onNewSupplier, userName }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await addSupplier({ ...formData, userName });
-    onNewSupplier();
-    setFormData({
-      supplier_name: '',
-      email_address: '',
-      num_checks: 0,
-      date_of_emailing: '',
-      status: '',
-      notes: ''
-    });
+    setErrorMsg('');
+    try {
+      await addSupplier({ ...formData, userName });
+      onNewSupplier();
+      setFormData({
+        supplier_name: '',
+        email_address: '',
+        num_checks: 0,
+        date_of_emailing: '',
+        status: '',
+        notes: ''
+      });
+    } catch (err) {
+      console.error(err);
+      if (err.response && err.response.data && err.response.data.error) {
+        setErrorMsg(err.response.data.error);
+      } else {
+        setErrorMsg('Error adding supplier.');
+      }
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="my-3">
       <h5>Add New Supplier</h5>
+      {errorMsg && <div className="alert alert-danger">{errorMsg}</div>}
       <div className="row">
         <div className="col">
           <input className="form-control" placeholder="Supplier Name" name="supplier_name" value={formData.supplier_name} onChange={handleChange} />
