@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// File upload
+// File upload setup
 const upload = multer({ dest: 'uploads/' });
 
 // API routes
@@ -33,6 +33,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
     const status = row['Replied?'] || '';
     const notes = row['Notes'] || '';
 
+    // Check if supplier already exists
     db.get(`SELECT id FROM suppliers WHERE supplier_name = ?`, [supplierName], (err, existing) => {
       if (existing) {
         // Update existing
@@ -52,10 +53,10 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
   res.json({ success: true });
 });
 
-// Serve the React frontend build (after you run npm run build in frontend)
+// Serve frontend build
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-// All other routes serve the frontend
+// Fallback to frontend for any other route
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
