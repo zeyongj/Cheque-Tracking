@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { fetchSuppliers } from './api';
 import LoginModal from './components/LoginModal';
 import SupplierTable from './components/SupplierTable';
 import AddSupplierForm from './components/AddSupplierForm';
+import UploadPage from './components/UploadPage';
 
-function App() {
-  const [userName, setUserName] = useState(null);
+function MainPage({ userName }) {
   const [suppliers, setSuppliers] = useState([]);
   const [totalSuppliers, setTotalSuppliers] = useState(0);
   const [totalChecks, setTotalChecks] = useState(0);
@@ -19,12 +20,8 @@ function App() {
   };
 
   useEffect(() => {
-    if (userName) {
-      loadData();
-    }
-  }, [userName]);
-
-  if (!userName) return <LoginModal onLogin={setUserName} />;
+    loadData();
+  }, []);
 
   return (
     <div className="container mt-5">
@@ -35,7 +32,27 @@ function App() {
       </div>
       <AddSupplierForm onNewSupplier={loadData} userName={userName}/>
       <SupplierTable suppliers={suppliers} userName={userName} onSupplierUpdated={loadData}/>
+      <div className="mt-3">
+        <a href="/admin">Go to Admin Upload Page</a>
+      </div>
     </div>
+  );
+}
+
+function App() {
+  const [userName, setUserName] = useState(null);
+
+  if (!userName) {
+    return <LoginModal onLogin={setUserName} />;
+  }
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainPage userName={userName} />} />
+        <Route path="/admin" element={<UploadPage />} />
+      </Routes>
+    </Router>
   );
 }
 
