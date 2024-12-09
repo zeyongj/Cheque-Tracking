@@ -27,6 +27,24 @@ function MainPage({ userName }) {
     window.location.href = '/api/export';
   };
 
+  const sortByName = () => {
+    const sorted = [...suppliers].sort((a, b) => {
+      const nameA = a.supplier_name || '';
+      const nameB = b.supplier_name || '';
+      return nameA.localeCompare(nameB);
+    });
+    setSuppliers(sorted);
+  };
+
+  const sortByChecks = () => {
+    const sorted = [...suppliers].sort((a, b) => {
+      const checksA = a.num_checks || 0;
+      const checksB = b.num_checks || 0;
+      return checksA - checksB; // ascending order
+    });
+    setSuppliers(sorted);
+  };
+
   return (
     <div className="container mt-5">
       <h1>Cheque Status Tracking</h1>
@@ -34,7 +52,11 @@ function MainPage({ userName }) {
       <div className="my-3">
         <strong>Total Suppliers: </strong>{totalSuppliers} | <strong>Total Checks: </strong>{totalChecks}
       </div>
-      <button className="btn btn-secondary mb-3" onClick={handleExport}>Export Data</button>
+      <div className="mb-3">
+        <button className="btn btn-secondary me-2" onClick={handleExport}>Export Data</button>
+        <button className="btn btn-info me-2" onClick={sortByName}>Sort by Name</button>
+        <button className="btn btn-info" onClick={sortByChecks}>Sort by # of Checks</button>
+      </div>
       <AddSupplierForm onNewSupplier={loadData} userName={userName}/>
       <SupplierTable suppliers={suppliers} userName={userName} onSupplierUpdated={loadData}/>
       <div className="mt-3">
