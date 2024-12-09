@@ -5,9 +5,7 @@ function LoginModal({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name.trim()) {
-      onLogin(name.trim());
-    }
+    if (name.trim()) onLogin(name.trim());
   };
 
   return (
