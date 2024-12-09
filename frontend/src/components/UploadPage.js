@@ -28,7 +28,6 @@ function UploadPage() {
         setMessage('Upload failed.');
       }
     } catch (error) {
-      console.error(error);
       setMessage('Error uploading file.');
     }
   };
