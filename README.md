@@ -58,3 +58,7 @@ This is a full-stack web application for tracking cheque-related information fro
 - **Deployment:**
   - Serve the React build from Express for a single URL deployment.
   - Compatible with platforms like Render or Heroku.
+
+## License
+
+This project is licensed under the apach 2.0 License. See the `LICENSE` file for more details.
