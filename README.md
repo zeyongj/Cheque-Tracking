@@ -61,4 +61,4 @@ This is a full-stack web application for tracking cheque-related information fro
 
 ## License
 
-This project is licensed under the apach 2.0 License. See the `LICENSE` file for more details.
+This project is licensed under the Apache-2.0 License. See the `LICENSE` file for more details.
