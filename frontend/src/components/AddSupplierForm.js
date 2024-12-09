@@ -13,14 +13,14 @@ function AddSupplierForm({ onNewSupplier, userName }) {
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({...formData, [e.target.name]: e.target.value});
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     try {
-      await addSupplier({ ...formData, userName });
+      await addSupplier({...formData, userName});
       onNewSupplier();
       setFormData({
         supplier_name: '',
@@ -31,7 +31,6 @@ function AddSupplierForm({ onNewSupplier, userName }) {
         notes: ''
       });
     } catch (err) {
-      console.error(err);
       if (err.response && err.response.data && err.response.data.error) {
         setErrorMsg(err.response.data.error);
       } else {
