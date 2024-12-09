@@ -23,6 +23,10 @@ function MainPage({ userName }) {
     loadData();
   }, []);
 
+  const handleExport = () => {
+    window.location.href = '/api/export';
+  };
+
   return (
     <div className="container mt-5">
       <h1>Cheque Status Tracking</h1>
@@ -30,6 +34,7 @@ function MainPage({ userName }) {
       <div className="my-3">
         <strong>Total Suppliers: </strong>{totalSuppliers} | <strong>Total Checks: </strong>{totalChecks}
       </div>
+      <button className="btn btn-secondary mb-3" onClick={handleExport}>Export Data</button>
       <AddSupplierForm onNewSupplier={loadData} userName={userName}/>
       <SupplierTable suppliers={suppliers} userName={userName} onSupplierUpdated={loadData}/>
       <div className="mt-3">
@@ -42,9 +47,7 @@ function MainPage({ userName }) {
 function App() {
   const [userName, setUserName] = useState(null);
 
-  if (!userName) {
-    return <LoginModal onLogin={setUserName} />;
-  }
+  if (!userName) return <LoginModal onLogin={setUserName} />;
 
   return (
     <Router>
