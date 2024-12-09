@@ -16,9 +16,17 @@ function SupplierTable({ suppliers, userName, onSupplierUpdated }) {
   };
 
   const saveEdit = async () => {
-    await updateSupplier(editingId, { ...formData, userName });
-    onSupplierUpdated();
-    setEditingId(null);
+    try {
+      await updateSupplier(editingId, { ...formData, userName, currentLastModifiedAt: formData.last_modified_at });
+      onSupplierUpdated();
+      setEditingId(null);
+    } catch (err) {
+      if (err.response && err.response.status === 409) {
+        alert("This record has been modified by someone else. Please refresh and try again.");
+      } else {
+        alert("Error saving changes.");
+      }
+    }
   };
 
   const handleChange = (e) => {
@@ -44,12 +52,12 @@ function SupplierTable({ suppliers, userName, onSupplierUpdated }) {
         {suppliers.map(sup => (
           editingId === sup.id ? (
             <tr key={sup.id}>
-              <td><input name="supplier_name" value={formData.supplier_name} onChange={handleChange} /></td>
-              <td><input name="email_address" value={formData.email_address} onChange={handleChange} /></td>
-              <td><input name="num_checks" type="number" value={formData.num_checks} onChange={handleChange} /></td>
-              <td><input name="date_of_emailing" value={formData.date_of_emailing} onChange={handleChange} /></td>
-              <td><input name="status" value={formData.status} onChange={handleChange} /></td>
-              <td><input name="notes" value={formData.notes} onChange={handleChange} /></td>
+              <td><input name="supplier_name" value={formData.supplier_name} onChange={handleChange}/></td>
+              <td><input name="email_address" value={formData.email_address} onChange={handleChange}/></td>
+              <td><input name="num_checks" type="number" value={formData.num_checks} onChange={handleChange}/></td>
+              <td><input name="date_of_emailing" value={formData.date_of_emailing} onChange={handleChange}/></td>
+              <td><input name="status" value={formData.status} onChange={handleChange}/></td>
+              <td><input name="notes" value={formData.notes} onChange={handleChange}/></td>
               <td>{formData.last_modified_by}</td>
               <td>{formData.last_modified_at}</td>
               <td>
